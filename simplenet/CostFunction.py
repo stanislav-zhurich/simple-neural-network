@@ -8,17 +8,18 @@ class CostFunction(ABC):
         pass
 
    
-    def calculate(self, Y: np.array, Y_hat: np.array, layers, cache: dict, configuration: dict) -> float:
+    def calculate(self, Y: np.array, Y_hat: np.array, layers, parameters: dict, configuration: dict) -> float:
         cost = self._calculate_cost(Y, Y_hat)
         lambd = configuration["lambda"]
         m = Y.shape[1]
         if lambd is not None:
             weight_sum = 0
             for i in range(1, len(layers)):
-                W = cache["W" + str(1)]
+                W = parameters["W" + str(1)]
                 weight_sum += np.sum(np.square(W))
             cost = cost + 2 * lambd/m * weight_sum
         return cost
+        
     
     @abstractmethod
     def _calculate_cost(self, Y: np.array, Y_hat: np.array) -> float:
